@@ -1,19 +1,35 @@
-export const ADD_RECIPE = 'ADD_RECIPE';
-export const REMOVE_FROM_CALENDAR = 'REMOVE_FROM_CALENDAR';
+export const CREATE_POST    = 'CREATE_POST';
+export const UPDATE_POST    = 'UPDATE_POST';
+export const DELETE_POST    = 'DELETE_POST';
+export const CREATE_COMMENT = 'CREATE_COMMENT';
+export const UPDATE_COMMENT = 'UPDATE_COMMENT';
+export const DELETE_COMMENT = 'DELETE_COMMENT';
+export const TRIGGER_MODAL  = 'TRIGGER_MODAL';
 
-export function addRecipe({ day, recipe, meal }) {
+export function createPost( data ) {
   return {
-    type: ADD_RECIPE,
-    day,
-    recipe,
-    meal
+    type: CREATE_POST,
+    ...data
   }
 }
 
-export function removeFromCalendar({ day, meal }) {
+export function updatePost( data ) {
   return {
-    type: REMOVE_FROM_CALENDAR,
-    day,
-    meal
+    type: UPDATE_POST,
+    ...data
+  }
+}
+
+export function deletePost( id ) {
+  return {
+    type: DELETE_POST,
+    id
+  }
+}
+
+export function triggerModal( isModalOpened ) {
+  return {
+    type: TRIGGER_MODAL,
+    isModalOpened
   }
 }

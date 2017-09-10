@@ -1,5 +1,58 @@
+/*
+Color Palette:
+
+light blue: #AAC9F2
+brown: #DB7A3C
+green: #4EF29B
+pink: #DB4DAE
+yellow: #D5F242
+*/
+
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+}
+
+input[type="submit"],
+button {
+  transition: all 0.1s ease-out;
+	padding: 0.75em 1.5em;
+	display: inline-block;
+	border-radius: 0;
+	border: 1px solid #DB4DAE;
+	color: #DB4DAE;
+	background: transparent;
+	font-size: 0.875em;
+	text-transform: uppercase;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover,
+button:hover {
+	background-color: #DB4DAE;
+	color: #fff;
+}
+
+input[type="submit"]:active,
+button:active {
+	transform: translate(1px, 1px);
+}
+
+.readable-modal {
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+  z-index: 999;
+	background: rgba(0,0,0,0.75);
+  display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.readable-modal__overlay {
+	padding: 2em;
+	background: #fff;
 }

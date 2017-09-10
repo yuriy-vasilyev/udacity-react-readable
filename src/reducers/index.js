@@ -1,18 +1,25 @@
 import { combineReducers } from 'redux';
 
 import {
-  ADD_RECIPE,
-  REMOVE_FROM_CALENDAR
+  CREATE_POST,
+  UPDATE_POST,
+  DELETE_POST,
+  CREATE_COMMENT,
+  UPDATE_COMMENT,
+  DELETE_COMMENT,
+  TRIGGER_MODAL
 } from '../actions';
 
-function food (state = {}, action) {
-  switch ( action.type ) {
-    case ADD_RECIPE:
-      const { recipe } = action;
+const initialGeneralState = {
+  isModalOpened: false
+}
 
+function general( state = initialGeneralState, action ) {
+  switch ( action.type ) {
+    case TRIGGER_MODAL:
       return {
         ...state,
-        [ recipe.label ]: recipe
+        isModalOpened: action.isModalOpened
       }
 
     default:
@@ -20,65 +27,79 @@ function food (state = {}, action) {
   }
 }
 
-const initialCalendarState = {
-  sunday: {
-    breakfast: null,
-    lunch: null,
-    dinner: null,
-  },
-  monday: {
-    breakfast: null,
-    lunch: null,
-    dinner: null,
-  },
-  tuesday: {
-    breakfast: null,
-    lunch: null,
-    dinner: null,
-  },
-  wednesday: {
-    breakfast: null,
-    lunch: null,
-    dinner: null,
-  },
-  thursday: {
-    breakfast: null,
-    lunch: null,
-    dinner: null,
-  },
-  friday: {
-    breakfast: null,
-    lunch: null,
-    dinner: null,
-  },
-  saturday: {
-    breakfast: null,
-    lunch: null,
-    dinner: null,
-  },
+function categories( state = {}, action ) {
+  switch ( action.type ) {
+
+    default:
+      return state;
+  }
 }
 
-function calendar (state = initialCalendarState, action) {
-  const { day, recipe, meal } = action;
+function posts( state = {}, action ) {
+  switch ( action.type ) {
+    case CREATE_POST:
+      const newId = Object.keys( state ).length + 1;
+
+      return {
+        ...state,
+        [ newId ]: {
+          id: newId,
+          timestamp: Date.now(),
+          title: action.title,
+          body: action.body,
+          author: action.author,
+          category: action.category,
+          voteScore: 1,
+          deleted: false
+        }
+      }
+
+    case UPDATE_POST:
+      let updatedPost = {};
+
+      if ( action.id ) {
+        updatedPost.id = action.id;
+      }
+      if ( action.title ) {
+        updatedPost.title = action.title;
+      }
+      if ( action.body ) {
+        updatedPost.body = action.body;
+      }
+      if ( action.author ) {
+        updatedPost.author = action.author;
+      }
+      if ( action.category ) {
+        updatedPost.category = action.category;
+      }
+      if ( action.voteScore ) {
+        updatedPost.voteScore = action.voteScore;
+      }
+      return {
+        ...state,
+        [ action.id ]: {
+          ...state[ action.id ],
+          ...updatedPost
+        }
+      }
+
+    case DELETE_POST:
+      return {
+        ...state,
+        [ action.id ]: {
+          ...state[ action.id ],
+          deleted: true
+        }
+      }
+
+    default:
+      return state;
+  }
+}
+
+function comments( state = {}, action ) {
 
   switch ( action.type ) {
-    case ADD_RECIPE:
-      return {
-        ...state,
-        [ day ]: {
-          ...state[ day ],
-          [ meal ]: recipe.label
-        }
-      }
-
-    case REMOVE_FROM_CALENDAR:
-      return {
-        ...state,
-        [ day ]: {
-          ...state[ day ],
-          [ meal ]: null
-        }
-      }
 
     default:
       return state;
@@ -86,6 +107,8 @@ function calendar (state = initialCalendarState, action) {
 }
 
 export default combineReducers({
-  food,
-  calendar
+  general,
+  categories,
+  posts,
+  comments
 })
