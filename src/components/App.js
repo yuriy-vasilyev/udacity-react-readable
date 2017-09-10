@@ -3,14 +3,20 @@ import { connect } from 'react-redux';
 import serializeForm from 'form-serialize';
 import { createPost, updatePost, deletePost, triggerModal } from '../actions';
 import Modal from 'react-modal';
+import Post from './Post';
 
 class App extends Component {
 
   render() {
-    const { createPost, isModalOpened, triggerModal } = this.props;
-
+    const { createPost, isModalOpened, triggerModal, posts } = this.props;
+    console.log( posts );
     return (
-      <div className='container'>
+      <div className="container">
+        <div className="posts-wrapper">
+          { posts &&
+            posts.map( post => <Post key={ post.id } post={ post } /> )
+          }
+        </div>
         <button
           onClick={ () => triggerModal( true ) }
           className="button"
@@ -26,7 +32,7 @@ class App extends Component {
             onSubmit={ event => {
               const formData = serializeForm( event.target, { hash: true } );
               createPost( formData );
-              triggerModal( true );
+              triggerModal( false );
               event.preventDefault();
             }}
           >
@@ -58,7 +64,13 @@ class App extends Component {
 
 function mapStateToProps({ general, categories, posts, comments }) {
   return {
-    posts: Object.keys( posts ).filter( postId => posts[ postId ].deleted === false ),
+    posts: Object.keys( posts ).map( postId => {
+      if ( posts[ postId ].deleted === false ) {
+        return posts[ postId ];
+      } else {
+        return false;
+      }
+    }),
     isModalOpened: general.isModalOpened
   }
 }
