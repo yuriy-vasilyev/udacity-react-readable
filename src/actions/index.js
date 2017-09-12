@@ -18,6 +18,15 @@ export function createPost( data ) {
   }
 }
 
+
+export function pushPost() {
+  return function( dispatch, data ) {
+    return Api
+      .pushPost( data )
+      .then( res => dispatch( createPost( data ) ) );
+  }
+}
+
 export function updatePost( data ) {
   return {
     type: UPDATE_POST,

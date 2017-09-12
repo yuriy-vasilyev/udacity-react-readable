@@ -14,28 +14,17 @@ export function fetchCategories() {
 
 export function fetchPosts() {
   return fetch( `${url}/posts`, init )
-    .then( res => res.json() )
-    .then( data => data.posts );
+    .then( res => res.json() );
 }
 
 export function fetchCategoryPosts( category ) {
   return fetch( `${url}/${category}/posts`, init )
-    .then( res => res.json() )
-    .then( data => data.posts );
+    .then( res => res.json() );
 }
 
-export function createPost( data ) {
-  let formData = new FormData();
-  data.append( 'id', data.id );
-  data.append( 'timestamp', data.timestamp );
-  data.append( 'title', data.title );
-  data.append( 'body', data.body );
-  data.append( 'owner', data.owner );
-  data.append( 'category', data.category );
-
+export function pushPost( data ) {
   init.method = 'POST';
-  init.body = formData;
+  init.body = JSON.stringify( data );
   return fetch( `${url}/posts`, init )
-    .then( res => res.json() )
-    .then( data => data.posts );
+    .then( res => res.json() );
 }

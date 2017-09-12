@@ -12,6 +12,7 @@
     "react-icons": "^2.2.5",
     "react-loading": "^0.1.4",
     "react-modal": "^2.3.2",
+    "react-native-uuid": "^1.4.9",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",

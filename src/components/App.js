@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import serializeForm from 'form-serialize';
-import { fetchCategories, fetchPosts, createPost, updatePost, deletePost, triggerModal } from '../actions';
+import uuid from 'react-native-uuid';
+import { fetchCategories, fetchPosts, pushPost, updatePost, deletePost, triggerModal } from '../actions';
 import { capitalize } from '../utils/helpers';
 import Modal from 'react-modal';
 import Post from './Post';
@@ -23,7 +24,7 @@ class App extends Component {
             ))}
           </ul>
           <div className="posts-wrapper">
-            { posts && posts.map( post => <Post key={ post.id } post={ post } /> ) }
+            { posts && posts.map( ( post, index ) => <Post key={ index } post={ post } /> ) }
           </div>
           <div className="buttons-wrapper">
             <button
@@ -41,7 +42,14 @@ class App extends Component {
             <form
               onSubmit={ event => {
                 const formData = serializeForm( event.target, { hash: true } );
-                createPost( formData );
+                const newPost = {
+                  ...formData,
+                  id: uuid.v1(),
+                  timestamp: Date.now(),
+                  voteScore: 1,
+                  deleted: false
+                };
+                createPost( newPost );
                 triggerModal( false );
                 event.preventDefault();
               }}
@@ -55,8 +63,8 @@ class App extends Component {
                 <textarea name="body"></textarea>
               </p>
               <p>
-                <label htmlFor="author">Author</label>
-                <input type="text" name="author" />
+                <label htmlFor="owner">Author</label>
+                <input type="text" name="owner" />
               </p>
               <p>
                 <label htmlFor="category">Category</label>
@@ -97,7 +105,7 @@ function mapDispatchToProps( dispatch ) {
 
   return {
     triggerModal: ( isModalOpened ) => dispatch( triggerModal( isModalOpened ) ),
-    createPost: ( data ) => dispatch( createPost( data ) ),
+    createPost: ( data ) => pushPost()( dispatch, data ),
     updatePost: ( data ) => dispatch( updatePost( data ) ),
     deletePost: ( id ) => dispatch( deletePost( id ) )
   }

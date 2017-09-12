@@ -30,7 +30,7 @@ function general( state = initialGeneralState, action ) {
   }
 }
 
-function categories( state = [], action ) {
+function categories( categories = [], action ) {
   switch ( action.type ) {
     case RECEIVE_CATEGORIES:
       return [
@@ -38,31 +38,31 @@ function categories( state = [], action ) {
       ]
 
     default:
-      return state;
+      return categories;
   }
 }
 
-function posts( state = {}, action ) {
+function posts( posts = {}, action ) {
   switch ( action.type ) {
     case RECEIVE_POSTS:
-      return {
-        ...action.posts
-      }
+      return action.posts.reduce( ( posts, post ) => {
+          posts[ post.id ] = post;
+          return posts;
+      }, {} );
 
     case CREATE_POST:
-      const newId = Object.keys( state ).length + 1;
 
       return {
-        ...state,
-        [ newId ]: {
-          id: newId,
-          timestamp: Date.now(),
+        ...posts,
+        [ action.id ]: {
+          id: action.id,
+          timestamp: action.timestamp,
           title: action.title,
           body: action.body,
-          author: action.author,
+          owner: action.owner,
           category: action.category,
-          voteScore: 1,
-          deleted: false
+          voteScore: action.voteScore,
+          deleted: action.deleted
         }
       }
 
@@ -88,33 +88,33 @@ function posts( state = {}, action ) {
         updatedPost.voteScore = action.voteScore;
       }
       return {
-        ...state,
+        ...posts,
         [ action.id ]: {
-          ...state[ action.id ],
+          ...posts[ action.id ],
           ...updatedPost
         }
       }
 
     case DELETE_POST:
       return {
-        ...state,
+        ...posts,
         [ action.id ]: {
-          ...state[ action.id ],
+          ...posts[ action.id ],
           deleted: true
         }
       }
 
     default:
-      return state;
+      return posts;
   }
 }
 
-function comments( state = {}, action ) {
+function comments( comments = {}, action ) {
 
   switch ( action.type ) {
 
     default:
-      return state;
+      return comments;
   }
 }
 
