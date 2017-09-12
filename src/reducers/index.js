@@ -1,6 +1,9 @@
 import { combineReducers } from 'redux';
 
 import {
+  RECEIVE_CATEGORIES,
+  RECEIVE_CATEGORY_POSTS,
+  RECEIVE_POSTS,
   CREATE_POST,
   UPDATE_POST,
   DELETE_POST,
@@ -27,8 +30,12 @@ function general( state = initialGeneralState, action ) {
   }
 }
 
-function categories( state = {}, action ) {
+function categories( state = [], action ) {
   switch ( action.type ) {
+    case RECEIVE_CATEGORIES:
+      return [
+        ...action.categories
+      ]
 
     default:
       return state;
@@ -37,6 +44,11 @@ function categories( state = {}, action ) {
 
 function posts( state = {}, action ) {
   switch ( action.type ) {
+    case RECEIVE_POSTS:
+      return {
+        ...action.posts
+      }
+
     case CREATE_POST:
       const newId = Object.keys( state ).length + 1;
 

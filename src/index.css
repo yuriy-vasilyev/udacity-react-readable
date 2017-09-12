@@ -11,17 +11,18 @@ yellow: #D5F242
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 input[type="submit"],
-button {
+button,
+.button {
   transition: all 0.1s ease-out;
 	padding: 0.75em 1.5em;
 	display: inline-block;
 	border-radius: 0;
-	border: 1px solid #DB4DAE;
-	color: #DB4DAE;
+	border: 1px solid #4EF29B;
+	color: #4EF29B;
 	background: transparent;
 	font-size: 0.875em;
 	text-transform: uppercase;
@@ -29,14 +30,43 @@ button {
 }
 
 input[type="submit"]:hover,
-button:hover {
-	background-color: #DB4DAE;
+button:hover,
+.button:hover {
+	background-color: #4EF29B;
 	color: #fff;
 }
 
 input[type="submit"]:active,
-button:active {
+button:active,
+.button:active {
 	transform: translate(1px, 1px);
+}
+
+.button.button--primary {
+  background-color: #4EF29B;
+	color: #fff;
+}
+
+.button.button--primary:hover {
+	background-color: #33c476;
+	border-color: #33c476;
+}
+
+.readable__container {
+  max-width: 60em;
+	margin: 0 auto;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+.readable__heading {
+	text-align: center;
+  color: #DB4DAE;
+}
+
+.buttons-wrapper {
+  text-align: center;
+  margin-top: 2em;
 }
 
 .readable-modal {
