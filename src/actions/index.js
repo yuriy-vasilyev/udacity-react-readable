@@ -10,6 +10,7 @@ export const CREATE_COMMENT         = 'CREATE_COMMENT';
 export const UPDATE_COMMENT         = 'UPDATE_COMMENT';
 export const DELETE_COMMENT         = 'DELETE_COMMENT';
 export const TRIGGER_MODAL          = 'TRIGGER_MODAL';
+export const UPDATE_MODAL_DATA      = 'UPDATE_MODAL_DATA';
 
 export function createPost( data ) {
   return {
@@ -17,7 +18,6 @@ export function createPost( data ) {
     ...data
   }
 }
-
 
 export function pushPost() {
   return function( dispatch, data ) {
@@ -27,10 +27,19 @@ export function pushPost() {
   }
 }
 
-export function updatePost( data ) {
+export function editPost( data ) {
   return {
     type: UPDATE_POST,
     ...data
+  }
+}
+
+
+export function updatePost() {
+  return function( dispatch, data ) {
+    return Api
+      .updatePost( data )
+      .then( res => dispatch( editPost( data ) ) );
   }
 }
 
@@ -49,10 +58,19 @@ export function removePost() {
   }
 }
 
-export function triggerModal( isModalOpened ) {
+export function triggerModal( isModalOpened, modalAction = null, modalData = null ) {
   return {
     type: TRIGGER_MODAL,
-    isModalOpened
+    isModalOpened,
+    modalAction,
+    modalData
+  }
+}
+
+export function updateModalData( modalData ) {
+  return {
+    type: UPDATE_MODAL_DATA,
+    modalData
   }
 }
 

@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import serializeForm from 'form-serialize';
-import uuid from 'react-native-uuid';
-import { fetchCategories, fetchPosts, pushPost, updatePost, deletePost, triggerModal } from '../actions';
+import { fetchCategories, fetchPosts, triggerModal } from '../actions';
 import { capitalize } from '../utils/helpers';
 import Modal from 'react-modal';
 import Post from './Post';
+import ModalWindow from './ModalWindow';
 
 class App extends Component {
 
   render() {
-    const { createPost, isModalOpened, triggerModal, posts, categories } = this.props;
+    const { isModalOpened, triggerModal, posts, categories } = this.props;
 
     return (
       <div className="readable">
@@ -28,7 +27,7 @@ class App extends Component {
           </div>
           <div className="buttons-wrapper">
             <button
-              onClick={ () => triggerModal( true ) }
+              onClick={ () => triggerModal( true, 'create' ) }
               className="button button--primary"
             >Create New Post</button>
           </div>
@@ -39,41 +38,7 @@ class App extends Component {
             onRequestClose={ () => triggerModal( false ) }
             contentLabel="Modal"
           >
-            <form
-              onSubmit={ event => {
-                const formData = serializeForm( event.target, { hash: true } );
-                const newPost = {
-                  ...formData,
-                  id: uuid.v1(),
-                  timestamp: Date.now(),
-                  voteScore: 1,
-                  deleted: false
-                };
-                createPost( newPost );
-                triggerModal( false );
-                event.preventDefault();
-              }}
-            >
-              <p>
-                <label htmlFor="title">Title</label>
-                <input type="text" name="title" />
-              </p>
-              <p>
-                <label htmlFor="body">Content</label>
-                <textarea name="body"></textarea>
-              </p>
-              <p>
-                <label htmlFor="owner">Author</label>
-                <input type="text" name="owner" />
-              </p>
-              <p>
-                <label htmlFor="category">Category</label>
-                <input type="text" name="category" />
-              </p>
-              <p>
-                <input type="submit" value="Create New Post" />
-              </p>
-            </form>
+            <ModalWindow />
           </Modal>
         </div>
       </div>
@@ -95,7 +60,9 @@ function mapStateToProps({ general, categories, posts, comments }) {
   return {
     posts: newPosts,
     categories,
-    isModalOpened: general.isModalOpened
+    isModalOpened: general.isModalOpened,
+    modalAction: general.modalAction,
+    modalData: general.modalData
   }
 }
 
@@ -104,10 +71,7 @@ function mapDispatchToProps( dispatch ) {
   fetchPosts()( dispatch );
 
   return {
-    triggerModal: ( isModalOpened ) => dispatch( triggerModal( isModalOpened ) ),
-    createPost: ( data ) => pushPost()( dispatch, data ),
-    updatePost: ( data ) => dispatch( updatePost( data ) ),
-    deletePost: ( id ) => dispatch( deletePost( id ) )
+    triggerModal: ( isModalOpened, action, data ) => dispatch( triggerModal( isModalOpened, action, data ) )
   }
 }
 

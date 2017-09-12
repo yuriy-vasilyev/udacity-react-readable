@@ -33,3 +33,17 @@ export function deletePost( id ) {
   init.method = 'DELETE';
   return fetch( `${url}/posts/${id}`, init );
 }
+
+
+export function updatePost( data ) {
+  init.method = 'PUT';
+  let params = {};
+  if ( data.title ) {
+    params.title = data.title;
+  }
+  if ( data.body ) {
+    params.body = data.body;
+  }
+  init.body = JSON.stringify( params );
+  return fetch( `${url}/posts/${data.id}`, init );
+}

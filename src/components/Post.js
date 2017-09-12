@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { updatePost, removePost } from '../actions';
+import { removePost, triggerModal } from '../actions';
 import PencilIcon from 'react-icons/lib/fa/pencil';
 import TimesIcon from 'react-icons/lib/fa/times-circle';
 
 class Post extends Component {
   render() {
-    const { post, removePost } = this.props;
+    const { post, removePost, triggerModal } = this.props;
     const postDate = new Date( post.timestamp );
     return (
       <div className="post-item">
         <div className="post-item__buttons">
+          <span
+            onClick={ () => triggerModal( true, 'update', { id: post.id, title: post.title, body: post.body } ) }
+            className="post-item__icon"
+          >
+            <PencilIcon size={24} />
+          </span>
           <span
             onClick={ () => removePost( post.id ) }
             className="post-item__icon"
@@ -34,7 +40,7 @@ class Post extends Component {
 
 function mapDispatchToProps( dispatch ) {
   return {
-    updatePost: ( data ) => updatePost()( dispatch, data ),
+    triggerModal: ( isModalOpened, action, data ) => dispatch( triggerModal( isModalOpened, action, data ) ),
     removePost: ( id ) => removePost()( dispatch, id )
   }
 }

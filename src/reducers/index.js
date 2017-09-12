@@ -10,11 +10,14 @@ import {
   CREATE_COMMENT,
   UPDATE_COMMENT,
   DELETE_COMMENT,
-  TRIGGER_MODAL
+  TRIGGER_MODAL,
+  UPDATE_MODAL_DATA
 } from '../actions';
 
 const initialGeneralState = {
-  isModalOpened: false
+  isModalOpened: false,
+  modalAction: null,
+  modalData: null
 }
 
 function general( state = initialGeneralState, action ) {
@@ -22,7 +25,15 @@ function general( state = initialGeneralState, action ) {
     case TRIGGER_MODAL:
       return {
         ...state,
-        isModalOpened: action.isModalOpened
+        isModalOpened: action.isModalOpened,
+        modalAction: action.modalAction,
+        modalData: action.modalData
+      }
+
+    case UPDATE_MODAL_DATA:
+      return {
+        ...state,
+        modalData: action.modalData
       }
 
     default:
@@ -69,24 +80,13 @@ function posts( posts = {}, action ) {
     case UPDATE_POST:
       let updatedPost = {};
 
-      if ( action.id ) {
-        updatedPost.id = action.id;
-      }
       if ( action.title ) {
         updatedPost.title = action.title;
       }
       if ( action.body ) {
         updatedPost.body = action.body;
       }
-      if ( action.author ) {
-        updatedPost.author = action.author;
-      }
-      if ( action.category ) {
-        updatedPost.category = action.category;
-      }
-      if ( action.voteScore ) {
-        updatedPost.voteScore = action.voteScore;
-      }
+
       return {
         ...posts,
         [ action.id ]: {
