@@ -10,7 +10,7 @@ import Post from './Post';
 class App extends Component {
 
   render() {
-    const { fetchCategories, createPost, isModalOpened, triggerModal, posts, categories } = this.props;
+    const { createPost, isModalOpened, triggerModal, posts, categories } = this.props;
 
     return (
       <div className="readable">
@@ -84,13 +84,13 @@ class App extends Component {
 function mapStateToProps({ general, categories, posts, comments }) {
   let newPosts = null;
   if ( posts ) {
-    newPosts = Object.keys( posts ).map( postId => {
+    newPosts = Object.keys( posts ).reduce( ( postsArr, postId ) => {
       if ( posts[ postId ].deleted === false ) {
-        return posts[ postId ];
-      } else {
-        return false;
+        postsArr.push( posts[ postId ] );
       }
-    });
+
+      return postsArr;
+    }, [] );
   }
   return {
     posts: newPosts,

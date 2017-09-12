@@ -41,6 +41,14 @@ export function deletePost( id ) {
   }
 }
 
+export function removePost() {
+  return function( dispatch, id ) {
+    return Api
+      .deletePost( id )
+      .then( res => dispatch( deletePost( id ) ) );
+  }
+}
+
 export function triggerModal( isModalOpened ) {
   return {
     type: TRIGGER_MODAL,

@@ -28,3 +28,8 @@ export function pushPost( data ) {
   return fetch( `${url}/posts`, init )
     .then( res => res.json() );
 }
+
+export function deletePost( id ) {
+  init.method = 'DELETE';
+  return fetch( `${url}/posts/${id}`, init );
+}
