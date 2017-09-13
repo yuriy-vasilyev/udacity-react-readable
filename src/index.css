@@ -12,6 +12,33 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Open Sans', sans-serif;
+  color: #333;
+}
+
+.nav {
+  margin-bottom: 2em;
+  text-align: center;
+}
+
+.nav-link {
+	display: inline-block;
+	margin: 5px;
+	text-transform: uppercase;
+	text-decoration: none;
+	padding: 5px 10px;
+	border: 1px solid;
+	color: #333;
+}
+
+.nav-link:hover {
+  transition: all 0.1s ease-out;
+  color: #AAC9F2;
+}
+
+.nav-link.active {
+	color: #fff;
+	background-color: #AAC9F2;
+	border-color: #AAC9F2;
 }
 
 input[type="submit"],
@@ -87,6 +114,59 @@ button:active,
 	background: #fff;
 }
 
+.post-item {
+  position: relative;
+}
+
+.post-item:not(:last-child) {
+  margin-bottom: 3em;
+}
+
+.post-item__buttons {
+  color: #333;
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+}
+
 .post-item__icon {
 	cursor: pointer;
+  margin-right: 0.25em;
+}
+
+.post-item__score {
+  display: flex;
+	align-items: center;
+}
+
+.post-item__score-btn {
+  display: flex;
+	justify-content: center;
+	align-items: center;
+  width: 2em;
+  height: 1.75em;
+  transition: all 0.1s ease-out;
+  border: 1px solid;
+  cursor: pointer;
+}
+
+.post-item__score-btn:hover {
+  background-color: #333;
+	color: #fff;
+}
+
+.post-item__score-value {
+  min-width: 2em;
+	display: inline-block;
+	text-align: center;
+}
+
+.text-green {
+  color: green;
+}
+
+
+.text-red {
+  color: red;
 }

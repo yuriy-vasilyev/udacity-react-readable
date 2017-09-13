@@ -1,29 +1,66 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCategories, fetchPosts, triggerModal } from '../actions';
+import { fetchCategories, fetchPosts, triggerModal, reorder, changeCategory } from '../actions';
 import { capitalize } from '../utils/helpers';
+import { Route, NavLink } from 'react-router-dom';
 import Modal from 'react-modal';
 import Post from './Post';
 import ModalWindow from './ModalWindow';
+import sortBy from 'sort-by';
 
 class App extends Component {
 
   render() {
-    const { isModalOpened, triggerModal, posts, categories } = this.props;
+    const {
+      isModalOpened,
+      triggerModal,
+      posts, categories,
+      currentCategory,
+      changeCategory,
+      reorder,
+      orderBy
+    } = this.props;
+
+    let postsToOutput = [];
+    let orderByValue = '';
+
+    switch ( orderBy ) {
+      case 'title':
+        orderByValue = orderBy;
+        break;
+
+      default:
+        orderByValue = `-${orderBy}`;
+        break;
+    }
+
+    if ( posts ) {
+      postsToOutput = posts.sort( sortBy( orderByValue ) );
+    }
 
     return (
       <div className="readable">
         <div className="readable__container">
           <h1 className="readable__heading">Udacity Readable Project</h1>
-          <ul className="categories">
+          <nav role="navigation" className="nav">
+            <NavLink key="home" to="/" className="nav-link" activeClassName="active">All</NavLink>
             { categories && categories.map( ( category, index ) => (
-              <li key={ index }>
-                <a href={ category.path }>{ capitalize( category.name ) }</a>
-              </li>
+              <NavLink key={ index } to={ `/${category.path}` } className="nav-link" activeClassName="active">{ capitalize( category.name ) }</NavLink>
             ))}
-          </ul>
+          </nav>
+          <div className="posts-order">
+            Order by
+            <select
+              onChange={ event => reorder( event.target.value ) }
+              value={ orderBy }
+            >
+              <option key="voteScore" value="voteScore">Vote Scores</option>
+              <option key="timestamp" value="timestamp">Date Created</option>
+              <option key="title" value="title">Title</option>
+            </select>
+          </div>
           <div className="posts-wrapper">
-            { posts && posts.map( ( post, index ) => <Post key={ index } post={ post } /> ) }
+            { postsToOutput.map( ( post, index ) => <Post key={ index } post={ post } /> ) }
           </div>
           <div className="buttons-wrapper">
             <button
@@ -62,7 +99,9 @@ function mapStateToProps({ general, categories, posts, comments }) {
     categories,
     isModalOpened: general.isModalOpened,
     modalAction: general.modalAction,
-    modalData: general.modalData
+    modalData: general.modalData,
+    currentCategory: general.currentCategory,
+    orderBy: general.orderBy
   }
 }
 
@@ -71,7 +110,9 @@ function mapDispatchToProps( dispatch ) {
   fetchPosts()( dispatch );
 
   return {
-    triggerModal: ( isModalOpened, action, data ) => dispatch( triggerModal( isModalOpened, action, data ) )
+    triggerModal: ( isModalOpened, action, data ) => dispatch( triggerModal( isModalOpened, action, data ) ),
+    changeCategory: ( category ) => dispatch( changeCategory( category ) ),
+    reorder: ( orderBy ) => dispatch( reorder( orderBy ) )
   }
 }
 

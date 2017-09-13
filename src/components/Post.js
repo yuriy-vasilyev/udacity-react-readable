@@ -8,6 +8,7 @@ class Post extends Component {
   render() {
     const { post, removePost, triggerModal, vote } = this.props;
     const postDate = new Date( post.timestamp );
+    const voteScoreClass = post.voteScore >= 0 ? ' text-green' : ' text-red'
     return (
       <div className="post-item">
         <div className="post-item__buttons">
@@ -25,14 +26,12 @@ class Post extends Component {
           </span>
           <div className="post-item__score">
             <span
-              className="post-item__score-up"
+              className="post-item__score-btn"
               onClick={ () => vote( post.id, 'upVote' ) }
             >+</span>
-            <span className="post-item__score-value">
-              { post.voteScore }
-            </span>
+            <span className={ `post-item__score-value${voteScoreClass}` }>{ post.voteScore }</span>
             <span
-              className="post-item__score-down"
+              className="post-item__score-btn"
               onClick={ () => vote( post.id, 'downVote' ) }
             >-</span>
           </div>

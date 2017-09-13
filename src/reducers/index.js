@@ -12,13 +12,17 @@ import {
   DELETE_COMMENT,
   TRIGGER_MODAL,
   UPDATE_MODAL_DATA,
-  VOTE_POST
+  VOTE_POST,
+  CHANGE_CATEGORY,
+  REORDER
 } from '../actions';
 
 const initialGeneralState = {
   isModalOpened: false,
   modalAction: null,
-  modalData: null
+  modalData: null,
+  currentCategory: null,
+  orderBy: 'voteScore'
 }
 
 function general( state = initialGeneralState, action ) {
@@ -35,6 +39,18 @@ function general( state = initialGeneralState, action ) {
       return {
         ...state,
         modalData: action.modalData
+      }
+
+    case CHANGE_CATEGORY:
+      return {
+        ...state,
+        currentCategory: action.category
+      }
+
+    case REORDER:
+      return {
+        ...state,
+        orderBy: action.orderBy
       }
 
     default:
@@ -63,7 +79,6 @@ function posts( posts = {}, action ) {
       }, {} );
 
     case CREATE_POST:
-
       return {
         ...posts,
         [ action.id ]: {
@@ -73,8 +88,8 @@ function posts( posts = {}, action ) {
           body: action.body,
           owner: action.owner,
           category: action.category,
-          voteScore: action.voteScore,
-          deleted: action.deleted
+          voteScore: 1,
+          deleted: false
         }
       }
 

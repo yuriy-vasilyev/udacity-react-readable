@@ -12,6 +12,8 @@ export const DELETE_COMMENT         = 'DELETE_COMMENT';
 export const TRIGGER_MODAL          = 'TRIGGER_MODAL';
 export const UPDATE_MODAL_DATA      = 'UPDATE_MODAL_DATA';
 export const VOTE_POST              = 'VOTE_POST';
+export const CHANGE_CATEGORY        = 'CHANGE_CATEGORY';
+export const REORDER                = 'REORDER';
 
 export function createPost( data ) {
   return {
@@ -88,6 +90,20 @@ export function updateModalData( modalData ) {
   return {
     type: UPDATE_MODAL_DATA,
     modalData
+  }
+}
+
+export function changeCategory( category ) {
+  return {
+    type: CHANGE_CATEGORY,
+    currentCategory: category
+  }
+}
+
+export function reorder( orderBy ) {
+  return {
+    type: REORDER,
+    orderBy
   }
 }
 
