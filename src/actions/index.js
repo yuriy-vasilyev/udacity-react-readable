@@ -11,6 +11,7 @@ export const UPDATE_COMMENT         = 'UPDATE_COMMENT';
 export const DELETE_COMMENT         = 'DELETE_COMMENT';
 export const TRIGGER_MODAL          = 'TRIGGER_MODAL';
 export const UPDATE_MODAL_DATA      = 'UPDATE_MODAL_DATA';
+export const VOTE_POST              = 'VOTE_POST';
 
 export function createPost( data ) {
   return {
@@ -40,6 +41,22 @@ export function updatePost() {
     return Api
       .updatePost( data )
       .then( res => dispatch( editPost( data ) ) );
+  }
+}
+
+export function votePost( id, option ) {
+  return {
+    type: VOTE_POST,
+    id,
+    option
+  }
+}
+
+export function vote() {
+  return function( dispatch, id, option ) {
+    return Api
+      .vote( id, option )
+      .then( res => dispatch( votePost( id, option ) ) );
   }
 }
 

@@ -86,3 +86,7 @@ button:active,
 	padding: 2em;
 	background: #fff;
 }
+
+.post-item__icon {
+	cursor: pointer;
+}

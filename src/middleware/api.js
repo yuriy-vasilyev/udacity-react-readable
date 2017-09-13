@@ -34,7 +34,6 @@ export function deletePost( id ) {
   return fetch( `${url}/posts/${id}`, init );
 }
 
-
 export function updatePost( data ) {
   init.method = 'PUT';
   let params = {};
@@ -46,4 +45,10 @@ export function updatePost( data ) {
   }
   init.body = JSON.stringify( params );
   return fetch( `${url}/posts/${data.id}`, init );
+}
+
+export function vote( id, option ) {
+  init.method = 'POST';
+  init.body = JSON.stringify({ option });
+  return fetch( `${url}/posts/${id}`, init );
 }

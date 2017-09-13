@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { pushPost, updatePost, updateModalData, removePost, triggerModal } from '../actions';
+import { pushPost, updatePost, updateModalData, triggerModal } from '../actions';
 import serializeForm from 'form-serialize';
 import { capitalize } from '../utils/helpers';
 import uuid from 'react-native-uuid';
@@ -18,9 +18,7 @@ class ModalWindow extends Component {
               const newPost = {
                 ...formData,
                 id: uuid.v1(),
-                timestamp: Date.now(),
-                voteScore: 1,
-                deleted: false
+                timestamp: Date.now()
               };
               createPost( newPost );
               triggerModal( false );

@@ -11,7 +11,8 @@ import {
   UPDATE_COMMENT,
   DELETE_COMMENT,
   TRIGGER_MODAL,
-  UPDATE_MODAL_DATA
+  UPDATE_MODAL_DATA,
+  VOTE_POST
 } from '../actions';
 
 const initialGeneralState = {
@@ -101,6 +102,15 @@ function posts( posts = {}, action ) {
         [ action.id ]: {
           ...posts[ action.id ],
           deleted: true
+        }
+      }
+
+    case VOTE_POST:
+      return {
+        ...posts,
+        [ action.id ]: {
+          ...posts[ action.id ],
+          voteScore: 'upVote' === action.option ? ++posts[ action.id ].voteScore : --posts[ action.id ].voteScore
         }
       }
 
