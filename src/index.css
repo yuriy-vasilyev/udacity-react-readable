@@ -114,15 +114,15 @@ button:active,
 	background: #fff;
 }
 
-.post-item {
+.loop-item {
   position: relative;
 }
 
-.post-item:not(:last-child) {
+.loop-item:not(:last-child) {
   margin-bottom: 3em;
 }
 
-.post-item__buttons {
+.loop-item__buttons {
   color: #333;
   position: absolute;
   right: 0;
@@ -130,17 +130,17 @@ button:active,
   align-items: center;
 }
 
-.post-item__icon {
+.loop-item__icon {
 	cursor: pointer;
   margin-right: 0.25em;
 }
 
-.post-item__score {
+.loop-item__score {
   display: flex;
 	align-items: center;
 }
 
-.post-item__score-btn {
+.loop-item__score-btn {
   display: flex;
 	justify-content: center;
 	align-items: center;
@@ -151,12 +151,12 @@ button:active,
   cursor: pointer;
 }
 
-.post-item__score-btn:hover {
+.loop-item__score-btn:hover {
   background-color: #333;
 	color: #fff;
 }
 
-.post-item__score-value {
+.loop-item__score-value {
   min-width: 2em;
 	display: inline-block;
 	text-align: center;

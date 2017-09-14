@@ -1,53 +1,53 @@
 import * as Api from '../middleware/api';
 
-export const RECEIVE_CATEGORIES     = 'RECEIVE_CATEGORIES';
-export const RECEIVE_POSTS          = 'RECEIVE_POSTS';
-export const RECEIVE_CATEGORY_POSTS = 'RECEIVE_CATEGORY_POSTS';
-export const CREATE_POST            = 'CREATE_POST';
-export const UPDATE_POST            = 'UPDATE_POST';
-export const DELETE_POST            = 'DELETE_POST';
-export const CREATE_COMMENT         = 'CREATE_COMMENT';
-export const UPDATE_COMMENT         = 'UPDATE_COMMENT';
-export const DELETE_COMMENT         = 'DELETE_COMMENT';
-export const TRIGGER_MODAL          = 'TRIGGER_MODAL';
-export const UPDATE_MODAL_DATA      = 'UPDATE_MODAL_DATA';
-export const VOTE_POST              = 'VOTE_POST';
-export const CHANGE_CATEGORY        = 'CHANGE_CATEGORY';
-export const REORDER                = 'REORDER';
-export const CHANGE_CURRENT_POST    = 'CHANGE_CURRENT_POST';
+export const RECEIVE_CATEGORIES    = 'RECEIVE_CATEGORIES';
+export const RECEIVE_POSTS         = 'RECEIVE_POSTS';
+export const RECEIVE_POST_COMMENTS = 'RECEIVE_POST_COMMENTS';
+export const CREATE_POST           = 'CREATE_POST';
+export const UPDATE_POST           = 'UPDATE_POST';
+export const DELETE_POST           = 'DELETE_POST';
+export const VOTE_POST             = 'VOTE_POST';
+export const CREATE_COMMENT        = 'CREATE_COMMENT';
+export const UPDATE_COMMENT        = 'UPDATE_COMMENT';
+export const DELETE_COMMENT        = 'DELETE_COMMENT';
+export const VOTE_COMMENT          = 'VOTE_COMMENT';
+export const TRIGGER_MODAL         = 'TRIGGER_MODAL';
+export const UPDATE_MODAL_DATA     = 'UPDATE_MODAL_DATA';
+export const CHANGE_CATEGORY       = 'CHANGE_CATEGORY';
+export const REORDER               = 'REORDER';
+export const CHANGE_CURRENT_POST   = 'CHANGE_CURRENT_POST';
 
-export function createPost( data ) {
+export function createPostAction( data ) {
   return {
     type: CREATE_POST,
     ...data
   }
 }
 
-export function pushPost() {
+export function createPost() {
   return function( dispatch, data ) {
     return Api
-      .pushPost( data )
-      .then( res => dispatch( createPost( data ) ) );
+      .createPost( data )
+      .then( res => dispatch( createPostAction( data ) ) );
   }
 }
 
-export function editPost( data ) {
+export function updatePostAction( data ) {
   return {
     type: UPDATE_POST,
     ...data
   }
 }
 
-
 export function updatePost() {
   return function( dispatch, data ) {
     return Api
       .updatePost( data )
-      .then( res => dispatch( editPost( data ) ) );
+      .then( res => dispatch( updatePostAction( data ) ) );
   }
 }
 
-export function votePost( id, option ) {
+export function votePostAction( id, option ) {
   return {
     type: VOTE_POST,
     id,
@@ -55,26 +55,87 @@ export function votePost( id, option ) {
   }
 }
 
-export function vote() {
+export function votePost() {
   return function( dispatch, id, option ) {
     return Api
-      .vote( id, option )
-      .then( res => dispatch( votePost( id, option ) ) );
+      .votePost( id, option )
+      .then( res => dispatch( votePostAction( id, option ) ) );
   }
 }
 
-export function deletePost( id ) {
+export function deletePostAction( id ) {
   return {
     type: DELETE_POST,
     id
   }
 }
 
-export function removePost() {
+export function deletePost() {
   return function( dispatch, id ) {
     return Api
       .deletePost( id )
-      .then( res => dispatch( deletePost( id ) ) );
+      .then( res => dispatch( deletePostAction( id ) ) );
+  }
+}
+
+export function createCommentAction( data ) {
+  return {
+    type: CREATE_COMMENT,
+    ...data
+  }
+}
+
+export function createComment() {
+  return function( dispatch, data ) {
+    return Api
+      .createComment( data )
+      .then( res => dispatch( createCommentAction( data ) ) );
+  }
+}
+
+export function updateCommentAction( data ) {
+  return {
+    type: UPDATE_COMMENT,
+    ...data
+  }
+}
+
+export function updateComment() {
+  return function( dispatch, data ) {
+    return Api
+      .updateComment( data )
+      .then( res => dispatch( updateCommentAction( data ) ) );
+  }
+}
+
+export function voteCommentAction( id, option ) {
+  return {
+    type: VOTE_COMMENT,
+    id,
+    option
+  }
+}
+
+export function voteComment() {
+  return function( dispatch, id, option ) {
+    return Api
+      .voteComment( id, option )
+      .then( res => dispatch( voteCommentAction( id, option ) ) );
+  }
+}
+
+export function deleteCommentAction( id ) {
+  return {
+    type: DELETE_COMMENT,
+    id
+  }
+}
+
+export function deleteComment() {
+  return function( dispatch, id ) {
+    return Api
+      .deleteComment( id )
+      .then( res => dispatch( deleteCommentAction( id ) ) );
   }
 }
 
@@ -115,7 +176,7 @@ export function reorder( orderBy ) {
   }
 }
 
-export function receiveCategories( categories ) {
+export function fetchCategoriesAction( categories ) {
   return {
     type: RECEIVE_CATEGORIES,
     categories
@@ -126,11 +187,11 @@ export function fetchCategories() {
   return function( dispatch ) {
     return Api
       .fetchCategories()
-      .then( categories => dispatch( receiveCategories( categories ) ) );
+      .then( categories => dispatch( fetchCategoriesAction( categories ) ) );
   }
 }
 
-export function receivePosts( posts ) {
+export function fetchPostsAction( posts ) {
   return {
     type: RECEIVE_POSTS,
     posts
@@ -141,21 +202,21 @@ export function fetchPosts() {
   return function( dispatch ) {
     return Api
       .fetchPosts()
-      .then( posts => dispatch( receivePosts( posts ) ) );
+      .then( posts => dispatch( fetchPostsAction( posts ) ) );
   }
 }
 
-export function receiveCategoryPosts( posts ) {
+export function fetchCommentsAction( comments ) {
   return {
-    type: RECEIVE_CATEGORY_POSTS,
-    posts
+    type: RECEIVE_POST_COMMENTS,
+    comments
   }
 }
 
-export function fetchCategoryPosts( category ) {
-  return function( dispatch ) {
+export function fetchComments() {
+  return function( dispatch, postId ) {
     return Api
-      .fetchCategoryPosts( category )
-      .then( posts => dispatch( receiveCategoryPosts( posts ) ) );
+      .fetchComments( postId )
+      .then( comments => dispatch( fetchCommentsAction( comments ) ) );
   }
 }

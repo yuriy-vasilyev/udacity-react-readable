@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { pushPost, updatePost, updateModalData, triggerModal } from '../actions';
+import { createComment, updateComment, createPost, updatePost, updateModalData, triggerModal } from '../actions';
 import serializeForm from 'form-serialize';
 import { capitalize } from '../utils/helpers';
 import uuid from 'react-native-uuid';
@@ -8,10 +8,21 @@ import uuid from 'react-native-uuid';
 class ModalWindow extends Component {
 
   render() {
-    const { categories, createPost, updatePost, triggerModal, modalAction, modalData, updateModalData } = this.props;
+    const {
+      categories,
+      createPost,
+      updatePost,
+      createComment,
+      updateComment,
+      triggerModal,
+      modalAction,
+      modalData,
+      updateModalData,
+      parentId
+    } = this.props;
     return (
       <div className="modal-window">
-        { 'create' === modalAction && (
+        { 'createPost' === modalAction && (
           <form
             onSubmit={ event => {
               const formData = serializeForm( event.target, { hash: true } );
@@ -52,7 +63,7 @@ class ModalWindow extends Component {
             </p>
           </form>
         )}
-        { 'update' === modalAction && (
+        { 'updatePost' === modalAction && (
           <form
             onSubmit={ event => {
               const formData = serializeForm( event.target, { hash: true } );
@@ -87,6 +98,61 @@ class ModalWindow extends Component {
             </p>
           </form>
         )}
+        { 'createComment' === modalAction && (
+          <form
+            onSubmit={ event => {
+              const formData = serializeForm( event.target, { hash: true } );
+              const newComment = {
+                ...formData,
+                id: uuid.v1(),
+                timestamp: Date.now(),
+                parentId
+              };
+              createComment( newComment );
+              triggerModal( false );
+              event.preventDefault();
+            }}
+          >
+            <p>
+              <label htmlFor="body">Content</label>
+              <textarea name="body"></textarea>
+            </p>
+            <p>
+              <label htmlFor="owner">Your Name</label>
+              <input type="text" name="owner" />
+            </p>
+            <p>
+              <input type="submit" value="Submit" />
+            </p>
+          </form>
+        )}
+        { 'updateComment' === modalAction && (
+          <form
+            onSubmit={ event => {
+              const formData = serializeForm( event.target, { hash: true } );
+              const data = {
+                ...formData,
+                id: modalData.id,
+                timestamp: Date.now()
+              };
+              updateComment( data );
+              triggerModal( false );
+              event.preventDefault();
+            }}
+          >
+            <p>
+              <label htmlFor="body">Content</label>
+              <textarea
+                name="body"
+                onChange={ event => updateModalData( { id: modalData.id, body: event.target.value } ) }
+                value={ modalData.body }
+              />
+            </p>
+            <p>
+              <input type="submit" value="Save Changes" />
+            </p>
+          </form>
+        )}
       </div>
     )
   }
@@ -97,14 +163,17 @@ function mapStateToProps({ categories, general }) {
     categories,
     isModalOpened: general.isModalOpened,
     modalAction: general.modalAction,
-    modalData: general.modalData
+    modalData: general.modalData,
+    parentId: general.currentPost
   }
 }
 
 function mapDispatchToProps( dispatch ) {
   return {
     triggerModal: ( isModalOpened ) => dispatch( triggerModal( isModalOpened ) ),
-    createPost: ( data ) => pushPost()( dispatch, data ),
+    createPost: ( data ) => createPost()( dispatch, data ),
+    createComment: ( data ) => createComment()( dispatch, data ),
+    updateComment: ( data ) => updateComment()( dispatch, data ),
     updateModalData: ( data ) => dispatch( updateModalData( data ) ),
     updatePost: ( data ) => updatePost()( dispatch, data )
   }

@@ -50,7 +50,7 @@ class ListPosts extends Component {
         </div>
         <div className="buttons-wrapper">
           <button
-            onClick={ () => triggerModal( true, 'create' ) }
+            onClick={ () => triggerModal( true, 'createPost' ) }
             className="button button--primary"
           >Create New Post</button>
         </div>

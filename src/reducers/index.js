@@ -2,17 +2,18 @@ import { combineReducers } from 'redux';
 
 import {
   RECEIVE_CATEGORIES,
-  RECEIVE_CATEGORY_POSTS,
+  RECEIVE_POST_COMMENTS,
   RECEIVE_POSTS,
   CREATE_POST,
   UPDATE_POST,
   DELETE_POST,
+  VOTE_POST,
   CREATE_COMMENT,
   UPDATE_COMMENT,
   DELETE_COMMENT,
+  VOTE_COMMENT,
   TRIGGER_MODAL,
   UPDATE_MODAL_DATA,
-  VOTE_POST,
   CHANGE_CATEGORY,
   REORDER,
   CHANGE_CURRENT_POST
@@ -143,8 +144,63 @@ function posts( posts = {}, action ) {
 }
 
 function comments( comments = {}, action ) {
-
   switch ( action.type ) {
+    case RECEIVE_POST_COMMENTS:
+      return action.comments.reduce( ( comments, comment ) => {
+          comments[ comment.id ] = comment;
+          return comments;
+      }, {} );
+
+    case CREATE_COMMENT:
+      return {
+        ...comments,
+        [ action.id ]: {
+          id: action.id,
+          timestamp: action.timestamp,
+          title: action.title,
+          body: action.body,
+          owner: action.owner,
+          category: action.category,
+          voteScore: 1,
+          deleted: false
+        }
+      }
+
+    case UPDATE_COMMENT:
+      let updatedPost = {};
+
+      if ( action.title ) {
+        updatedPost.title = action.title;
+      }
+      if ( action.body ) {
+        updatedPost.body = action.body;
+      }
+
+      return {
+        ...comments,
+        [ action.id ]: {
+          ...comments[ action.id ],
+          ...updatedPost
+        }
+      }
+
+    case DELETE_COMMENT:
+      return {
+        ...comments,
+        [ action.id ]: {
+          ...comments[ action.id ],
+          deleted: true
+        }
+      }
+
+    case VOTE_COMMENT:
+      return {
+        ...comments,
+        [ action.id ]: {
+          ...comments[ action.id ],
+          voteScore: 'upVote' === action.option ? ++comments[ action.id ].voteScore : --comments[ action.id ].voteScore
+        }
+      }
 
     default:
       return comments;
