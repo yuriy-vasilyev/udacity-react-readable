@@ -133,7 +133,8 @@ class ModalWindow extends Component {
               const data = {
                 ...formData,
                 id: modalData.id,
-                timestamp: Date.now()
+                timestamp: Date.now(),
+                parentId
               };
               updateComment( data );
               triggerModal( false );

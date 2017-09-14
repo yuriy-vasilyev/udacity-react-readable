@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { deletePost, votePost, triggerModal } from '../actions';
 import PencilIcon from 'react-icons/lib/fa/pencil';
 import TimesIcon from 'react-icons/lib/fa/times-circle';
-import { Link } from 'react-router-dom';
 import ListComments from './ListComments';
 
 class SinglePost extends Component {

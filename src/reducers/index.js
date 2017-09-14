@@ -146,59 +146,66 @@ function posts( posts = {}, action ) {
 function comments( comments = {}, action ) {
   switch ( action.type ) {
     case RECEIVE_POST_COMMENTS:
-      return action.comments.reduce( ( comments, comment ) => {
-          comments[ comment.id ] = comment;
-          return comments;
+      const postComments = action.comments.reduce( ( comments, comment ) => {
+        comments[ comment.id ] = comment;
+        return comments;
       }, {} );
+
+      return {
+        ...comments,
+        [ action.parentId ]: postComments
+      }
 
     case CREATE_COMMENT:
       return {
         ...comments,
-        [ action.id ]: {
-          id: action.id,
-          timestamp: action.timestamp,
-          title: action.title,
-          body: action.body,
-          owner: action.owner,
-          category: action.category,
-          voteScore: 1,
-          deleted: false
+        [ action.parentId ]: {
+          ...comments[ action.parentId ],
+          [ action.id ]: {
+            id: action.id,
+            timestamp: action.timestamp,
+            body: action.body,
+            owner: action.owner,
+            parentId: action.parentId,
+            voteScore: 1,
+            deleted: false
+          }
         }
       }
 
     case UPDATE_COMMENT:
-      let updatedPost = {};
-
-      if ( action.title ) {
-        updatedPost.title = action.title;
-      }
-      if ( action.body ) {
-        updatedPost.body = action.body;
-      }
-
       return {
         ...comments,
-        [ action.id ]: {
-          ...comments[ action.id ],
-          ...updatedPost
+        [ action.parentId ]: {
+          ...comments[ action.parentId ],
+          [ action.id ]: {
+            ...comments[ action.parentId ][ action.id ],
+            body: action.body
+          }
         }
       }
 
     case DELETE_COMMENT:
       return {
         ...comments,
-        [ action.id ]: {
-          ...comments[ action.id ],
-          deleted: true
+        [ action.parentId ]: {
+          ...comments[ action.parentId ],
+          [ action.id ]: {
+            ...comments[ action.parentId ][ action.id ],
+            deleted: true
+          }
         }
       }
 
     case VOTE_COMMENT:
       return {
         ...comments,
-        [ action.id ]: {
-          ...comments[ action.id ],
-          voteScore: 'upVote' === action.option ? ++comments[ action.id ].voteScore : --comments[ action.id ].voteScore
+        [ action.parentId ]: {
+          ...comments[ action.parentId ],
+          [ action.id ]: {
+            ...comments[ action.parentId ][ action.id ],
+            voteScore: 'upVote' === action.option ? ++comments[ action.parentId ][ action.id ].voteScore : --comments[ action.parentId ][ action.id ].voteScore
+          }
         }
       }
 

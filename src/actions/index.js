@@ -108,34 +108,36 @@ export function updateComment() {
   }
 }
 
-export function voteCommentAction( id, option ) {
+export function voteCommentAction( parentId, id, option ) {
   return {
     type: VOTE_COMMENT,
+    parentId: parentId,
     id,
     option
   }
 }
 
 export function voteComment() {
-  return function( dispatch, id, option ) {
+  return function( dispatch, parentId, id, option ) {
     return Api
       .voteComment( id, option )
-      .then( res => dispatch( voteCommentAction( id, option ) ) );
+      .then( res => dispatch( voteCommentAction( parentId, id, option ) ) );
   }
 }
 
-export function deleteCommentAction( id ) {
+export function deleteCommentAction( parentId, id ) {
   return {
     type: DELETE_COMMENT,
+    parentId: parentId,
     id
   }
 }
 
 export function deleteComment() {
-  return function( dispatch, id ) {
+  return function( dispatch, parentId, id ) {
     return Api
       .deleteComment( id )
-      .then( res => dispatch( deleteCommentAction( id ) ) );
+      .then( res => dispatch( deleteCommentAction( parentId, id ) ) );
   }
 }
 
@@ -206,17 +208,18 @@ export function fetchPosts() {
   }
 }
 
-export function fetchCommentsAction( comments ) {
+export function fetchCommentsAction( comments, parentId ) {
   return {
     type: RECEIVE_POST_COMMENTS,
+    parentId,
     comments
   }
 }
 
 export function fetchComments() {
-  return function( dispatch, postId ) {
+  return function( dispatch, parentId ) {
     return Api
-      .fetchComments( postId )
-      .then( comments => dispatch( fetchCommentsAction( comments ) ) );
+      .fetchComments( parentId )
+      .then( comments => dispatch( fetchCommentsAction( comments, parentId ) ) );
   }
 }

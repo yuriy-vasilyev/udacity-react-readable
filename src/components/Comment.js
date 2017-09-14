@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { updateComment, deleteComment, voteComment, triggerModal } from '../actions';
+import { deleteComment, voteComment, triggerModal } from '../actions';
 import PencilIcon from 'react-icons/lib/fa/pencil';
 import TimesIcon from 'react-icons/lib/fa/times-circle';
 
 class Comment extends Component {
   render() {
-    const { comment, updateComment, deleteComment, voteComment, triggerModal } = this.props;
+    const { comment, deleteComment, voteComment, triggerModal } = this.props;
     const commentDate = new Date( comment.timestamp );
-    const voteScoreClass = comment.voteScore >= 0 ? ' text-green' : ' text-red'
+    const voteScoreClass = comment.voteScore >= 0 ? ' text-green' : ' text-red';
+
     return (
       <div className="loop-item">
         <div className="loop-item__buttons">
@@ -19,7 +20,7 @@ class Comment extends Component {
             <PencilIcon size={24} />
           </span>
           <span
-            onClick={ () => deleteComment( comment.id ) }
+            onClick={ () => deleteComment( comment.parentId, comment.id ) }
             className="loop-item__icon"
           >
             <TimesIcon size={24} />
@@ -27,12 +28,12 @@ class Comment extends Component {
           <div className="loop-item__score">
             <span
               className="loop-item__score-btn"
-              onClick={ () => voteComment( comment.id, 'upVote' ) }
+              onClick={ () => voteComment( comment.parentId, comment.id, 'upVote' ) }
             >+</span>
             <span className={ `loop-item__score-value${voteScoreClass}` }>{ comment.voteScore }</span>
             <span
               className="loop-item__score-btn"
-              onClick={ () => voteComment( comment.id, 'downVote' ) }
+              onClick={ () => voteComment( comment.parentId, comment.id, 'downVote' ) }
             >-</span>
           </div>
         </div>
@@ -61,9 +62,8 @@ function mapStateToProps({ general, comments }) {
 function mapDispatchToProps( dispatch ) {
   return {
     triggerModal: ( isModalOpened, action, data ) => dispatch( triggerModal( isModalOpened, action, data ) ),
-    updateComment: ( data ) => updateComment()( dispatch, data ),
-    deleteComment: ( id ) => deleteComment()( dispatch, id ),
-    voteComment: ( id, option ) => voteComment()( dispatch, id, option )
+    deleteComment: ( parentId, id ) => deleteComment()( dispatch, parentId, id ),
+    voteComment: ( parentId, id, option ) => voteComment()( dispatch, parentId, id, option )
   }
 }
 

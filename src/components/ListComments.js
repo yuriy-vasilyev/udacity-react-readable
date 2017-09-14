@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createComment, triggerModal, reorder } from '../actions';
-import PencilIcon from 'react-icons/lib/fa/pencil';
-import TimesIcon from 'react-icons/lib/fa/times-circle';
+import { triggerModal, reorder } from '../actions';
 import Comment from './Comment';
 import sortBy from 'sort-by';
 
 class ListComments extends Component {
   render() {
     const {
-      createComment,
       reorder,
       orderBy,
       triggerModal
@@ -57,10 +54,10 @@ class ListComments extends Component {
 
 function mapStateToProps({ general, comments }) {
   let newComments = null;
-  if ( comments ) {
-    newComments = Object.keys( comments ).reduce( ( commentsArr, commentId ) => {
-      if ( comments[ commentId ].deleted === false ) {
-        commentsArr.push( comments[ commentId ] );
+  if ( comments && comments.hasOwnProperty( general.currentPost ) ) {
+    newComments = Object.keys( comments[ general.currentPost ] ).reduce( ( commentsArr, commentId ) => {
+      if ( comments[ general.currentPost ][ commentId ].deleted === false ) {
+        commentsArr.push( comments[ general.currentPost ][ commentId ] );
       }
 
       return commentsArr;
@@ -78,7 +75,6 @@ function mapStateToProps({ general, comments }) {
 function mapDispatchToProps( dispatch ) {
   return {
     triggerModal: ( isModalOpened, action, data ) => dispatch( triggerModal( isModalOpened, action, data ) ),
-    createComment: ( data ) => createComment()( dispatch, data ),
     reorder: ( orderBy ) => dispatch( reorder( orderBy ) )
   }
 }
