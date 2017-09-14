@@ -96,7 +96,7 @@ export function updateModalData( modalData ) {
 export function changeCategory( category ) {
   return {
     type: CHANGE_CATEGORY,
-    currentCategory: category
+    category
   }
 }
 

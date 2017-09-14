@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { removePost, vote, triggerModal } from '../actions';
 import PencilIcon from 'react-icons/lib/fa/pencil';
 import TimesIcon from 'react-icons/lib/fa/times-circle';
+import { Link } from 'react-router-dom';
 
 class Post extends Component {
   render() {
@@ -44,6 +45,12 @@ class Post extends Component {
           <div className="post-item__category">{ post.category }</div>
           <div className="post-item__date">{ postDate.toString() }</div>
           <div className="post-item__owner">{ post.owner }</div>
+        </div>
+        <div className="">
+          <Link
+            className="post-item__read-more"
+            to={ `/${post.category}/${post.id}` }
+          >Read More</Link>
         </div>
       </div>
     );

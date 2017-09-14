@@ -14,12 +14,14 @@ class App extends Component {
     const {
       isModalOpened,
       triggerModal,
-      posts, categories,
+      categories,
       currentCategory,
       changeCategory,
       reorder,
       orderBy
     } = this.props;
+
+    let { posts } = this.props;
 
     let postsToOutput = [];
     let orderByValue = '';
@@ -35,6 +37,11 @@ class App extends Component {
     }
 
     if ( posts ) {
+
+      if ( currentCategory ) {
+        posts = posts.filter( post => post.category === currentCategory );
+      }
+
       postsToOutput = posts.sort( sortBy( orderByValue ) );
     }
 
@@ -43,9 +50,21 @@ class App extends Component {
         <div className="readable__container">
           <h1 className="readable__heading">Udacity Readable Project</h1>
           <nav role="navigation" className="nav">
-            <NavLink key="home" to="/" className="nav-link" activeClassName="active">All</NavLink>
+            <NavLink
+              key="home"
+              exact to="/"
+              className="nav-link"
+              activeClassName="active"
+              onClick={ () => changeCategory( null ) }
+            >Home</NavLink>
             { categories && categories.map( ( category, index ) => (
-              <NavLink key={ index } to={ `/${category.path}` } className="nav-link" activeClassName="active">{ capitalize( category.name ) }</NavLink>
+              <NavLink
+                key={ index }
+                to={ `/${category.path}` }
+                className="nav-link"
+                activeClassName="active"
+                onClick={ () => changeCategory( category.path ) }
+              >{ capitalize( category.name ) }</NavLink>
             ))}
           </nav>
           <div className="posts-order">
