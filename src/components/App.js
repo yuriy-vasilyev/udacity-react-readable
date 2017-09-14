@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCategories, fetchPosts, triggerModal, reorder, changeCategory } from '../actions';
+import { fetchCategories, fetchPosts, triggerModal, changeCategory } from '../actions';
 import { capitalize } from '../utils/helpers';
-import { Route, NavLink } from 'react-router-dom';
+import { withRouter, Route, NavLink } from 'react-router-dom';
 import Modal from 'react-modal';
-import Post from './Post';
+import ListPosts from './ListPosts';
+import SinglePost from './SinglePost';
 import ModalWindow from './ModalWindow';
-import sortBy from 'sort-by';
 
 class App extends Component {
 
@@ -15,41 +15,14 @@ class App extends Component {
       isModalOpened,
       triggerModal,
       categories,
-      currentCategory,
-      changeCategory,
-      reorder,
-      orderBy
+      changeCategory
     } = this.props;
-
-    let { posts } = this.props;
-
-    let postsToOutput = [];
-    let orderByValue = '';
-
-    switch ( orderBy ) {
-      case 'title':
-        orderByValue = orderBy;
-        break;
-
-      default:
-        orderByValue = `-${orderBy}`;
-        break;
-    }
-
-    if ( posts ) {
-
-      if ( currentCategory ) {
-        posts = posts.filter( post => post.category === currentCategory );
-      }
-
-      postsToOutput = posts.sort( sortBy( orderByValue ) );
-    }
 
     return (
       <div className="readable">
         <div className="readable__container">
           <h1 className="readable__heading">Udacity Readable Project</h1>
-          <nav role="navigation" className="nav">
+          <nav className="nav">
             <NavLink
               key="home"
               exact to="/"
@@ -67,26 +40,18 @@ class App extends Component {
               >{ capitalize( category.name ) }</NavLink>
             ))}
           </nav>
-          <div className="posts-order">
-            Order by
-            <select
-              onChange={ event => reorder( event.target.value ) }
-              value={ orderBy }
-            >
-              <option key="voteScore" value="voteScore">Vote Scores</option>
-              <option key="timestamp" value="timestamp">Date Created</option>
-              <option key="title" value="title">Title</option>
-            </select>
-          </div>
-          <div className="posts-wrapper">
-            { postsToOutput.map( ( post, index ) => <Post key={ index } post={ post } /> ) }
-          </div>
-          <div className="buttons-wrapper">
-            <button
-              onClick={ () => triggerModal( true, 'create' ) }
-              className="button button--primary"
-            >Create New Post</button>
-          </div>
+          <Route
+            exact path="/:category/:string"
+            component={ SinglePost }
+          />
+          <Route
+            exact path="/"
+            component={ ListPosts }
+          />
+          <Route
+            exact path="/:category"
+            component={ ListPosts }
+          />
           <Modal
             className="readable-modal__overlay"
             overlayClassName="readable-modal"
@@ -102,25 +67,12 @@ class App extends Component {
   }
 }
 
-function mapStateToProps({ general, categories, posts, comments }) {
-  let newPosts = null;
-  if ( posts ) {
-    newPosts = Object.keys( posts ).reduce( ( postsArr, postId ) => {
-      if ( posts[ postId ].deleted === false ) {
-        postsArr.push( posts[ postId ] );
-      }
-
-      return postsArr;
-    }, [] );
-  }
+function mapStateToProps({ general, categories, comments }) {
   return {
-    posts: newPosts,
     categories,
     isModalOpened: general.isModalOpened,
     modalAction: general.modalAction,
-    modalData: general.modalData,
-    currentCategory: general.currentCategory,
-    orderBy: general.orderBy
+    modalData: general.modalData
   }
 }
 
@@ -130,12 +82,11 @@ function mapDispatchToProps( dispatch ) {
 
   return {
     triggerModal: ( isModalOpened, action, data ) => dispatch( triggerModal( isModalOpened, action, data ) ),
-    changeCategory: ( category ) => dispatch( changeCategory( category ) ),
-    reorder: ( orderBy ) => dispatch( reorder( orderBy ) )
+    changeCategory: ( category ) => dispatch( changeCategory( category ) )
   }
 }
 
-export default connect(
+export default withRouter( connect(
   mapStateToProps,
   mapDispatchToProps
-)( App );
+)( App ) );

@@ -5,7 +5,7 @@ import PencilIcon from 'react-icons/lib/fa/pencil';
 import TimesIcon from 'react-icons/lib/fa/times-circle';
 import { Link } from 'react-router-dom';
 
-class Post extends Component {
+class SinglePost extends Component {
   render() {
     const { post, removePost, triggerModal, vote } = this.props;
     const postDate = new Date( post.timestamp );
@@ -57,6 +57,15 @@ class Post extends Component {
   }
 }
 
+function mapStateToProps({ general, posts }) {
+  return {
+    post: posts[ general.currentPost ],
+    isModalOpened: general.isModalOpened,
+    modalAction: general.modalAction,
+    modalData: general.modalData
+  }
+}
+
 function mapDispatchToProps( dispatch ) {
   return {
     triggerModal: ( isModalOpened, action, data ) => dispatch( triggerModal( isModalOpened, action, data ) ),
@@ -66,6 +75,6 @@ function mapDispatchToProps( dispatch ) {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
-)( Post );
+)( SinglePost );

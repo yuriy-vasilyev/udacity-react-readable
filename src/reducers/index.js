@@ -14,7 +14,8 @@ import {
   UPDATE_MODAL_DATA,
   VOTE_POST,
   CHANGE_CATEGORY,
-  REORDER
+  REORDER,
+  CHANGE_CURRENT_POST
 } from '../actions';
 
 const initialGeneralState = {
@@ -22,6 +23,7 @@ const initialGeneralState = {
   modalAction: null,
   modalData: null,
   currentCategory: null,
+  currentPost: null,
   orderBy: 'voteScore'
 }
 
@@ -51,6 +53,12 @@ function general( state = initialGeneralState, action ) {
       return {
         ...state,
         orderBy: action.orderBy
+      }
+
+    case CHANGE_CURRENT_POST:
+      return {
+        ...state,
+        currentPost: action.id
       }
 
     default:

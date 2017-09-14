@@ -14,6 +14,7 @@ export const UPDATE_MODAL_DATA      = 'UPDATE_MODAL_DATA';
 export const VOTE_POST              = 'VOTE_POST';
 export const CHANGE_CATEGORY        = 'CHANGE_CATEGORY';
 export const REORDER                = 'REORDER';
+export const CHANGE_CURRENT_POST    = 'CHANGE_CURRENT_POST';
 
 export function createPost( data ) {
   return {
@@ -83,6 +84,13 @@ export function triggerModal( isModalOpened, modalAction = null, modalData = nul
     isModalOpened,
     modalAction,
     modalData
+  }
+}
+
+export function changeCurrentPost( id ) {
+  return {
+    type: CHANGE_CURRENT_POST,
+    id
   }
 }
 
