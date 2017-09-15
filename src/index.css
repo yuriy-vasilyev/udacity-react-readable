@@ -79,6 +79,20 @@ button:active,
 	border-color: #33c476;
 }
 
+button.close-button {
+	padding: 0;
+	border: 0;
+	display: block;
+	margin: 2em auto 0;
+	color: #333;
+}
+
+button.close-button:hover {
+  background-color: transparent;
+  color: #333;
+  text-decoration: underline;
+}
+
 .readable__container {
   max-width: 60em;
 	margin: 0 auto;
@@ -96,36 +110,18 @@ button:active,
   margin-top: 2em;
 }
 
-.readable-modal {
-	position: fixed;
-	left: 0;
-	top: 0;
-	right: 0;
-	bottom: 0;
-  z-index: 999;
-	background: rgba(0,0,0,0.75);
-  display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.readable-modal__overlay {
-	padding: 2em;
-	background: #fff;
-}
-
 .loop-item {
-  position: relative;
+
 }
 
 .loop-item:not(:last-child) {
-  margin-bottom: 3em;
+  margin-bottom: 1.5em;
+	padding-bottom: 1.5em;
+	border-bottom: 1px solid #ccc;
 }
 
 .loop-item__buttons {
   color: #333;
-  position: absolute;
-  right: 0;
   display: flex;
   align-items: center;
 }
@@ -166,7 +162,79 @@ button:active,
   color: green;
 }
 
-
 .text-red {
   color: red;
+}
+
+.readable-modal {
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+  z-index: 999;
+	background: rgba(0,0,0,0.75);
+  overflow: auto;
+}
+
+.readable-modal__overlay {
+	padding: 2em;
+	background: #fff;
+}
+
+.modal-window {
+	width: 30em;
+	max-width: 100%;
+}
+
+.modal-window label {
+	display: block;
+	font-weight: 600;
+}
+
+.modal-window textarea {
+  font-size: 1em;
+	width: 100%;
+	min-height: 20em;
+  border: 1px solid #ccc;
+}
+
+.modal-window input[type="text"],
+.modal-window select {
+	width: 100%;
+	padding: 0.25em;
+	font-size: 1em;
+  border: 1px solid #ccc;
+}
+
+.modal-window input[type="submit"] {
+	display: block;
+	margin: 3em auto 0;
+}
+
+@media (max-width: 767px) {
+  .readable-modal {
+    padding: 1em;
+  }
+
+  .loop-item__buttons {
+  	margin-top: 2em;
+  }
+}
+
+@media (min-width: 768px) {
+  .readable-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .loop-item {
+    position: relative;
+  }
+
+  .loop-item__buttons {
+    position: absolute;
+    right: 0;
+  }
 }

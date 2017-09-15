@@ -154,6 +154,10 @@ class ModalWindow extends Component {
             </p>
           </form>
         )}
+        <button
+          className="close-button"
+          onClick={ () => triggerModal( false ) }
+        >Close</button>
       </div>
     )
   }
