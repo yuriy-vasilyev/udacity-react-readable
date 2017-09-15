@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCategories, fetchPosts, triggerModal, changeCategory } from '../actions';
+import { fetchCategories, fetchPosts, fetchComments, triggerModal, changeCategory } from '../actions';
 import { capitalize } from '../utils/helpers';
 import { withRouter, Route, NavLink } from 'react-router-dom';
 import Modal from 'react-modal';
@@ -67,7 +67,7 @@ class App extends Component {
   }
 }
 
-function mapStateToProps({ general, categories, comments }) {
+function mapStateToProps({ general, categories }) {
   return {
     categories,
     isModalOpened: general.isModalOpened,
@@ -78,7 +78,9 @@ function mapStateToProps({ general, categories, comments }) {
 
 function mapDispatchToProps( dispatch ) {
   fetchCategories()( dispatch );
-  fetchPosts()( dispatch );
+  fetchPosts()( dispatch ).then( posts => {
+    posts.map( post => fetchComments()( dispatch, post.id ) );
+  });
 
   return {
     triggerModal: ( isModalOpened, action, data ) => dispatch( triggerModal( isModalOpened, action, data ) ),

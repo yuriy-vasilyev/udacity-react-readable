@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { deletePost, votePost, triggerModal } from '../actions';
+import { capitalize, getCommentsNumber } from '../utils/helpers';
 import PencilIcon from 'react-icons/lib/fa/pencil';
 import TimesIcon from 'react-icons/lib/fa/times-circle';
 import ListComments from './ListComments';
 
 class SinglePost extends Component {
   render() {
-    const { post, deletePost, triggerModal, votePost } = this.props;
+    const { post, comments, deletePost, triggerModal, votePost } = this.props;
     const postDate = new Date( post.timestamp );
     const voteScoreClass = post.voteScore >= 0 ? ' text-green' : ' text-red'
     return (
@@ -41,20 +42,18 @@ class SinglePost extends Component {
         <div className="loop-item__content">
           { post.body }
         </div>
-        <div className="loop-item__meta">
-          <div className="loop-item__category">{ post.category }</div>
-          <div className="loop-item__date">{ postDate.toString() }</div>
-          <div className="loop-item__owner">{ post.owner }</div>
-        </div>
+        <div className="loop-item__meta">{ `Posted by ${post.author} in ${capitalize(post.category)} on ${postDate.toDateString()}` }</div>
+        <div className="loop-item__comments">{ getCommentsNumber( comments, post.id ) }</div>
         <ListComments />
       </div>
     );
   }
 }
 
-function mapStateToProps({ general, posts }) {
+function mapStateToProps({ general, posts, comments }) {
   return {
     post: posts[ general.currentPost ],
+    comments,
     isModalOpened: general.isModalOpened,
     modalAction: general.modalAction,
     modalData: general.modalData

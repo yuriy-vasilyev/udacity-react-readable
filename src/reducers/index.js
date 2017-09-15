@@ -165,7 +165,7 @@ function comments( comments = {}, action ) {
             id: action.id,
             timestamp: action.timestamp,
             body: action.body,
-            owner: action.owner,
+            author: action.author,
             parentId: action.parentId,
             voteScore: 1,
             deleted: false

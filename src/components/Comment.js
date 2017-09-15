@@ -41,10 +41,7 @@ class Comment extends Component {
         <div className="loop-item__content">
           { comment.body }
         </div>
-        <div className="loop-item__meta">
-          <div className="loop-item__date">{ commentDate.toString() }</div>
-          <div className="loop-item__owner">{ comment.owner }</div>
-        </div>
+        <div className="loop-item__meta">{ `Posted by ${comment.author} on ${commentDate.toDateString()}` }</div>
       </div>
     );
   }

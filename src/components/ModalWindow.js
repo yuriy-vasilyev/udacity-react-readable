@@ -118,8 +118,8 @@ class ModalWindow extends Component {
               <textarea name="body"></textarea>
             </p>
             <p>
-              <label htmlFor="owner">Your Name</label>
-              <input type="text" name="owner" />
+              <label htmlFor="author">Your Name</label>
+              <input type="text" name="author" />
             </p>
             <p>
               <input type="submit" value="Submit" />

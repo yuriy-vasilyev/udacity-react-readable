@@ -204,7 +204,10 @@ export function fetchPosts() {
   return function( dispatch ) {
     return Api
       .fetchPosts()
-      .then( posts => dispatch( fetchPostsAction( posts ) ) );
+      .then( posts => {
+        dispatch( fetchPostsAction( posts ) );
+        return posts;
+      });
   }
 }
 
