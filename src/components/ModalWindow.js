@@ -59,7 +59,7 @@ class ModalWindow extends Component {
               </select>
             </p>
             <p>
-              <input type="submit" value="Create New Post" />
+              <input type="submit" className="button button--primary" value="Create New Post" />
             </p>
           </form>
         )}
@@ -94,7 +94,7 @@ class ModalWindow extends Component {
               />
             </p>
             <p>
-              <input type="submit" value="Save Changes" />
+              <input type="submit" className="button button--primary" value="Save Changes" />
             </p>
           </form>
         )}
@@ -122,7 +122,7 @@ class ModalWindow extends Component {
               <input type="text" name="author" />
             </p>
             <p>
-              <input type="submit" value="Submit" />
+              <input type="submit" className="button button--primary" value="Submit" />
             </p>
           </form>
         )}
@@ -150,7 +150,7 @@ class ModalWindow extends Component {
               />
             </p>
             <p>
-              <input type="submit" value="Save Changes" />
+              <input type="submit" className="button button--primary" value="Save Changes" />
             </p>
           </form>
         )}
