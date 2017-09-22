@@ -106,7 +106,7 @@ class ModalWindow extends Component {
                 ...formData,
                 id: uuid.v1(),
                 timestamp: Date.now(),
-                parentId
+                parentId: modalData.postId
               };
               createComment( newComment );
               triggerModal( false );

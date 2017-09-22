@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCategories, fetchPosts, fetchComments, triggerModal, changeCategory } from '../actions';
+import { fetchCategories, fetchPosts, fetchComments, triggerModal } from '../actions';
 import { capitalize } from '../utils/helpers';
 import { withRouter, Route, NavLink } from 'react-router-dom';
 import Modal from 'react-modal';
@@ -14,8 +14,7 @@ class App extends Component {
     const {
       isModalOpened,
       triggerModal,
-      categories,
-      changeCategory
+      categories
     } = this.props;
 
     return (
@@ -28,22 +27,16 @@ class App extends Component {
               exact to="/"
               className="nav-link"
               activeClassName="active"
-              onClick={ () => changeCategory( null ) }
             >Home</NavLink>
             { categories && categories.map( ( category, index ) => (
               <NavLink
                 key={ index }
-                to={ `/${category.path}` }
+                exact to={ `/${category.path}` }
                 className="nav-link"
                 activeClassName="active"
-                onClick={ () => changeCategory( category.path ) }
               >{ capitalize( category.name ) }</NavLink>
             ))}
           </nav>
-          <Route
-            exact path="/:category/:string"
-            component={ SinglePost }
-          />
           <Route
             exact path="/"
             component={ ListPosts }
@@ -51,6 +44,10 @@ class App extends Component {
           <Route
             exact path="/:category"
             component={ ListPosts }
+          />
+          <Route
+            exact path="/:category/:id"
+            component={ SinglePost }
           />
           <Modal
             className="readable-modal__overlay"
@@ -83,8 +80,7 @@ function mapDispatchToProps( dispatch ) {
   });
 
   return {
-    triggerModal: ( isModalOpened, action, data ) => dispatch( triggerModal( isModalOpened, action, data ) ),
-    changeCategory: ( category ) => dispatch( changeCategory( category ) )
+    triggerModal: ( isModalOpened, action, data ) => dispatch( triggerModal( isModalOpened, action, data ) )
   }
 }
 

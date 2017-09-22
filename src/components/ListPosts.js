@@ -6,6 +6,14 @@ import sortBy from 'sort-by';
 
 class ListPosts extends Component {
 
+  constructor( props ) {
+    super();
+    this.category = false;
+    if ( props.match.params.hasOwnProperty( 'category' ) ) {
+      this.category = props.match.params.category;
+    }
+  }
+
   render() {
     const {
       reorder,
@@ -28,7 +36,11 @@ class ListPosts extends Component {
         break;
     }
 
+
     if ( posts ) {
+      if ( this.category ) {
+        posts = posts.filter( post => post.category === this.category );
+      }
       postsToOutput = posts.sort( sortBy( orderByValue ) );
     }
 

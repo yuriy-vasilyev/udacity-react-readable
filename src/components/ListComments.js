@@ -9,7 +9,8 @@ class ListComments extends Component {
     const {
       reorder,
       orderBy,
-      triggerModal
+      triggerModal,
+      postId
     } = this.props;
 
     let { comments } = this.props;
@@ -34,7 +35,7 @@ class ListComments extends Component {
               <option key="timestamp" value="timestamp">Date Created</option>
             </select>
             <div className="comments-wrapper">
-              { commentsToOutput.map( ( comment, index ) => <Comment key={ index } comment={ comment } /> ) }
+              { commentsToOutput.map( ( comment, index ) => <Comment key={ index } comment={ comment } postId={ postId } /> ) }
             </div>
           </div>
         )}
@@ -43,7 +44,7 @@ class ListComments extends Component {
         )}
         <div className="buttons-wrapper">
           <button
-            onClick={ () => triggerModal( true, 'createComment' ) }
+            onClick={ () => triggerModal( true, 'createComment', { postId } ) }
             className="button"
           >Add New Comment</button>
         </div>
@@ -52,12 +53,12 @@ class ListComments extends Component {
   }
 }
 
-function mapStateToProps({ general, comments }) {
+function mapStateToProps( { general, comments }, props ) {
   let newComments = null;
-  if ( comments && comments.hasOwnProperty( general.currentPost ) ) {
-    newComments = Object.keys( comments[ general.currentPost ] ).reduce( ( commentsArr, commentId ) => {
-      if ( comments[ general.currentPost ][ commentId ].deleted === false ) {
-        commentsArr.push( comments[ general.currentPost ][ commentId ] );
+  if ( comments && comments.hasOwnProperty( props.postId ) ) {
+    newComments = Object.keys( comments[ props.postId ] ).reduce( ( commentsArr, commentId ) => {
+      if ( comments[ props.postId ][ commentId ].deleted === false ) {
+        commentsArr.push( comments[ props.postId ][ commentId ] );
       }
 
       return commentsArr;

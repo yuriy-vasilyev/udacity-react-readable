@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { deleteComment, voteComment, triggerModal } from '../actions';
+import { deleteComment, voteComment, triggerModal, changeCurrentPost } from '../actions';
 import PencilIcon from 'react-icons/lib/fa/pencil';
 import TimesIcon from 'react-icons/lib/fa/times-circle';
 
 class Comment extends Component {
   render() {
-    const { comment, deleteComment, voteComment, triggerModal } = this.props;
+    const { comment, deleteComment, voteComment, triggerModal, postId, changeCurrentPost } = this.props;
     const commentDate = new Date( comment.timestamp );
     const voteScoreClass = comment.voteScore >= 0 ? ' text-green' : ' text-red';
 
@@ -14,7 +14,10 @@ class Comment extends Component {
       <div className="loop-item">
         <div className="loop-item__buttons">
           <span
-            onClick={ () => triggerModal( true, 'updateComment', { id: comment.id, body: comment.body } ) }
+            onClick={ () => {
+              changeCurrentPost( postId );
+              triggerModal( true, 'updateComment', { id: comment.id, body: comment.body, postId } );
+            }}
             className="loop-item__icon"
           >
             <PencilIcon size={24} />
@@ -47,9 +50,8 @@ class Comment extends Component {
   }
 }
 
-function mapStateToProps({ general, comments }) {
+function mapStateToProps({ general }) {
   return {
-    comments,
     isModalOpened: general.isModalOpened,
     modalAction: general.modalAction,
     modalData: general.modalData
@@ -60,6 +62,7 @@ function mapDispatchToProps( dispatch ) {
   return {
     triggerModal: ( isModalOpened, action, data ) => dispatch( triggerModal( isModalOpened, action, data ) ),
     deleteComment: ( parentId, id ) => deleteComment()( dispatch, parentId, id ),
+    changeCurrentPost: ( id ) => dispatch( changeCurrentPost( id ) ),
     voteComment: ( parentId, id, option ) => voteComment()( dispatch, parentId, id, option )
   }
 }

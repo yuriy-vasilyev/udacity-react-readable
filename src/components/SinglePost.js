@@ -7,8 +7,44 @@ import TimesIcon from 'react-icons/lib/fa/times-circle';
 import ListComments from './ListComments';
 
 class SinglePost extends Component {
+
+  constructor( props ) {
+    super();
+    this.postId = false;
+    if ( props.match.params.hasOwnProperty( 'id' ) ) {
+      this.postId = props.match.params.id;
+    }
+  }
+
   render() {
-    const { post, comments, deletePost, triggerModal, votePost } = this.props;
+    const {
+      posts,
+      comments,
+      deletePost,
+      triggerModal,
+      votePost
+    } = this.props;
+
+    if ( ! this.postId ) {
+      return (
+        <p>Something went wrong. Post ID is not provided.</p>
+      );
+    }
+
+    if ( ! posts || ! posts.hasOwnProperty( this.postId ) ) {
+      return (
+        <p>Something went wrong. There is no post in the DB you are looking for.</p>
+      );
+    }
+
+    const post = posts[ this.postId ];
+
+    if ( post.deleted ) {
+      return (
+        <p>Sorry, the post you are looking for is deleted.</p>
+      );
+    }
+
     const postDate = new Date( post.timestamp );
     const voteScoreClass = post.voteScore >= 0 ? ' text-green' : ' text-red'
     return (
@@ -44,7 +80,7 @@ class SinglePost extends Component {
         </div>
         <div className="loop-item__meta">{ `Posted by ${post.author} in ${capitalize(post.category)} on ${postDate.toDateString()}` }</div>
         <div className="loop-item__comments">{ getCommentsNumber( comments, post.id ) }</div>
-        <ListComments />
+        <ListComments postId={ post.id } />
       </div>
     );
   }
@@ -52,7 +88,7 @@ class SinglePost extends Component {
 
 function mapStateToProps({ general, posts, comments }) {
   return {
-    post: posts[ general.currentPost ],
+    posts,
     comments,
     isModalOpened: general.isModalOpened,
     modalAction: general.modalAction,
