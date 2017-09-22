@@ -15,6 +15,10 @@ body {
   color: #333;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 .nav {
   margin-bottom: 2em;
   text-align: center;
@@ -96,8 +100,7 @@ button.close-button:hover {
 .readable__container {
   max-width: 60em;
 	margin: 0 auto;
-	padding-left: 1em;
-	padding-right: 1em;
+	padding: 1em;
 }
 
 .readable__heading {
@@ -180,11 +183,9 @@ button.close-button:hover {
 .readable-modal__overlay {
 	padding: 2em;
 	background: #fff;
-}
-
-.modal-window {
-	width: 30em;
-	max-width: 100%;
+  width: 30em;
+  max-width: 100%;
+  margin: 2em auto;
 }
 
 .modal-window label {
@@ -223,12 +224,6 @@ button.close-button:hover {
 }
 
 @media (min-width: 768px) {
-  .readable-modal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
   .loop-item {
     position: relative;
   }
