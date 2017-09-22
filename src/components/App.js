@@ -39,11 +39,19 @@ class App extends Component {
           </nav>
           <Route
             exact path="/"
-            component={ ListPosts }
+            render={ () => <ListPosts category="all" /> }
           />
           <Route
-            exact path="/:category"
-            component={ ListPosts }
+            exact path="/react"
+            render={ () => <ListPosts category="react" /> }
+          />
+          <Route
+            exact path="/redux"
+            render={ () => <ListPosts category="redux" /> }
+          />
+          <Route
+            exact path="/udacity"
+            render={ () => <ListPosts category="udacity" /> }
           />
           <Route
             exact path="/:category/:id"

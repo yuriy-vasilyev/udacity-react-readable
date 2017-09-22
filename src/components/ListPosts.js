@@ -6,19 +6,12 @@ import sortBy from 'sort-by';
 
 class ListPosts extends Component {
 
-  constructor( props ) {
-    super();
-    this.category = false;
-    if ( props.match.params.hasOwnProperty( 'category' ) ) {
-      this.category = props.match.params.category;
-    }
-  }
-
   render() {
     const {
       reorder,
       orderBy,
-      triggerModal
+      triggerModal,
+      category
     } = this.props;
 
     let { posts } = this.props;
@@ -38,8 +31,8 @@ class ListPosts extends Component {
 
 
     if ( posts ) {
-      if ( this.category ) {
-        posts = posts.filter( post => post.category === this.category );
+      if ( 'all' !== category ) {
+        posts = posts.filter( post => post.category === category );
       }
       postsToOutput = posts.sort( sortBy( orderByValue ) );
     }
