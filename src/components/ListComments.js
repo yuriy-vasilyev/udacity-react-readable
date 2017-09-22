@@ -15,11 +15,7 @@ class ListComments extends Component {
 
     let { comments } = this.props;
 
-    let commentsToOutput = [];
-
-    if ( comments ) {
-      commentsToOutput = comments.sort( sortBy( `-${orderBy}` ) );
-    }
+    const commentsToOutput = comments ? comments.sort( sortBy( `-${orderBy}` ) ) : [];
 
     return (
       <div className="comments-wrapper">
